@@ -1,5 +1,8 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
+
+
+
 export const counterSlice = createSlice({
   initialState: 0,
   name: 'count',
@@ -35,11 +38,29 @@ export const setlist  = createSlice({
    
   },
 });
+export const setAlpha  = createSlice({
+  initialState:{},
+  name: 'Alpha',
+  reducers: {
+   onAplha:(state,action)=>{
+     if(state[action.payload]){
+      state[action.payload]=state[action.payload]+1
+     }
+     else{
+       state[action.payload]=1  
+     }
+   }
+   
+  },
+});
+
+
+
 
 export const store = configureStore({
   reducer: {
     count: counterSlice.reducer,
-   
+    Alpha:setAlpha.reducer,
     list: setlist.reducer,
   },
 });

@@ -4,6 +4,7 @@ import Display from './component/display';
 import Update from './component/increment';
 import Reset from './component/reset';
 import Todo from './todo/todoApp';
+import Button from "./Button/button";
 
 export default function App() {
   return (
@@ -11,7 +12,8 @@ export default function App() {
       {/* <Display/><br/>
     <Update/><br/>
     <Reset/> */}
-      <Todo />
+      {/* <Todo /> */}
+      <Button/>
     </div>
   );
 }
