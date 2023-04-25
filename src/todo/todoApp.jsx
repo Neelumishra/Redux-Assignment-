@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { todoList } from '../store/store';
 import { setlist } from '../store/store';
@@ -6,48 +6,55 @@ import { setlist } from '../store/store';
 import { useSelector } from 'react-redux';
 
 export default function Todo() {
-  const input = useSelector((state) => {
-    return state.Todo;
-  });
+  const [inputValue, setInputValue] = useState('');
+  const [editIndex, setEditIndex] = useState(null);
+
   const data = useSelector((state) => {
     return state.list;
   });
-  console.log(input);
+
   const dispatch = useDispatch();
   function handlechange(e) {
-    dispatch(todoList.actions.onInput(e.target.value));
+    setInputValue(e.target.value);
   }
   function handleClick() {
-    dispatch(setlist.actions.onstore([...data, input]));
-    dispatch(todoList.actions.onClear(''));
+    if (editIndex !== null) {
+      const Copy = [...data];
+      Copy[editIndex] = inputValue;
+      dispatch(setlist.actions.onUpdate(Copy));
+      setEditIndex(null);
+      setInputValue('');
+    } else {
+      dispatch(setlist.actions.onstore(inputValue));
+      setInputValue('');
+    }
   }
   function handleDelete(index) {
-    dispatch(
-      setlist.actions.onDelete(
-        data.filter((ele, e) => {
-          if (index !== e) {
-            return ele;
-          }
-        })
-      )
-    );
+    dispatch(setlist.actions.onDelete(index));
+  }
+  function handleUpdate(index) {
+    setEditIndex(index);
+    setInputValue(data[index]);
   }
   return (
     <>
       <h1>Task List</h1>
 
       <input
-        value={input}
+        value={inputValue}
         onChange={handlechange}
         type="text"
         placeholder="Enter Task"
       />
-      <button onClick={handleClick}>Add</button>
+      <button onClick={handleClick}>
+        {editIndex == null ? 'ADD' : 'UPDATE'}
+      </button>
       {data.map((e, index) => (
         <>
           {' '}
           <li>{e}</li>
-          <button onClick={() => handleDelete(index)}>Delete</button>
+          <button onClick={() => handleDelete(index)}>❌</button>
+          <button onClick={() => handleUpdate(index)}>📏</button>
         </>
       ))}
     </>

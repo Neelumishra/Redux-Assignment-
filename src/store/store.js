@@ -18,28 +18,20 @@ export const counterSlice = createSlice({
     },
   },
 });
-export const todoList = createSlice({
-  initialState: '',
-  name: 'Todo',
-  reducers: {
-    onInput: (state, action) => {
-      return action.payload;
-    },
-    onClear: (state, action) => {
-      return action.payload;
-    },
-  },
-});
+
 export const setlist  = createSlice({
   initialState: [],
   name: 'list',
   reducers: {
     onstore: (state, action) => {
-      return action.payload;
+       state.push( action.payload);
     },
     onDelete: (state, action) => {
-      return action.payload;
+      state.splice(action.payload,1);
     },
+    onUpdate:(state, action)=>{
+        return action.payload
+    }
    
   },
 });
@@ -47,7 +39,7 @@ export const setlist  = createSlice({
 export const store = configureStore({
   reducer: {
     count: counterSlice.reducer,
-    Todo: todoList.reducer,
+   
     list: setlist.reducer,
   },
 });
